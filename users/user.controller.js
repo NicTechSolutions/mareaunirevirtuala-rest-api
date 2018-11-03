@@ -10,7 +10,9 @@ module.exports = router;
 
 function login(req, res, next) {
     userService.auth(req.body)
-        .then(user => user ? res.json(user) : throw 'Email or password is incorrect')
+        .then(user => user ? res.json(user) : res.status(400).json({
+            message: 'Email or password is incorrect'
+        }))
         .catch(err => next(err));
 }
 

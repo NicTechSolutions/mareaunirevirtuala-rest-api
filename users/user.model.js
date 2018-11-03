@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 const schema = new Schema({
     name: {
         type: String,
-        unique: true,
         required: true
     },
     hash: {
@@ -13,6 +12,7 @@ const schema = new Schema({
     },
     email: {
         type: String,
+        unique: true,
         required: true
     },
     createdAt: {
@@ -21,6 +21,8 @@ const schema = new Schema({
     }
 });
 
-schema.set('toJSON', virtuals: true);
+schema.set('toJSON', {
+    virtuals: true
+});
 
 module.exports = mongoose.model('User', schema);
