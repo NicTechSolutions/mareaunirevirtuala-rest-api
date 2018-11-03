@@ -19,6 +19,8 @@ const schema = new Schema({
         type: Date,
         default: Date.now
     }
+}, {
+    versionKey: false
 });
 
 schema.set('toJSON', {
