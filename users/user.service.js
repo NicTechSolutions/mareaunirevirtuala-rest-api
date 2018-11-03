@@ -19,8 +19,10 @@ async function auth({
     if (user && bcrypt.compareSync(password, user.hash)) {
         const {
             hash,
+            _id,
+            createdAt,
             ...userWithoutHash
-        } = user.toOoject();
+        } = user.toObject();
         const token = jwt.sign({
             sub: user.id
         }, config.secret);
