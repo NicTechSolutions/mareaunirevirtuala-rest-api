@@ -1,7 +1,7 @@
-const config = require('config.json');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const db = require('helpers/db');
+const config = require("config.json");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const db = require("helpers/db");
 const User = db.User;
 
 module.exports = {
@@ -37,7 +37,7 @@ async function create(userParam) {
     if (await User.findOne({
             email: userParam.email
         })) {
-        throw 'Email already used';
+        throw "Email already used";
     }
 
     const user = new User(userParam);

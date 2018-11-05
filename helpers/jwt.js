@@ -1,6 +1,6 @@
-const expressJwt = require('express-jwt');
-const config = require('config.json');
-const userService = require('../users/user.service');
+const expressJwt = require("express-jwt");
+const config = require("config.json");
+const userService = require("../users/user.service");
 
 module.exports = jwt;
 
@@ -11,8 +11,8 @@ function jwt() {
         isRevoked
     }).unless({
         path: [
-            '/users/login',
-            '/users/register',
+            "/users/login",
+            "/users/register",
         ]
     });
 }

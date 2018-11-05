@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
@@ -23,8 +23,8 @@ const schema = new Schema({
     versionKey: false
 });
 
-schema.set('toJSON', {
+schema.set("toJSON", {
     virtuals: true
 });
 
-module.exports = mongoose.model('User', schema);
+module.exports = mongoose.model("User", schema);
