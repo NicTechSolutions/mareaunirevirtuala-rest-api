@@ -6,7 +6,8 @@ const User = db.User;
 
 module.exports = {
     create,
-    auth
+    auth,
+    getById
 };
 
 async function auth({
@@ -47,4 +48,8 @@ async function create(userParam) {
     }
 
     await user.save();
+}
+
+async function getById(id) {
+    return await User.findById(id);
 }
