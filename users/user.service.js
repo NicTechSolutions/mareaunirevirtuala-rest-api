@@ -16,7 +16,7 @@ async function auth({
 }) {
     const user = await User.findOne({
         email
-    });
+    }).select("+hash");
     if (user && bcrypt.compareSync(password, user.hash)) {
         const {
             hash,
