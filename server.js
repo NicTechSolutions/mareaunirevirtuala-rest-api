@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(cors());
 app.use(jwt());
-app.use("/users", require("./users/user.controller"));
+app.use("/api/users", require("./users/user.controller"));
 app.use(errorHandler);
 
 const port = process.env.NODE_ENV === "production" ? 80 : 4000;
