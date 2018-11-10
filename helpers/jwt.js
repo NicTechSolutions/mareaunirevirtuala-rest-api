@@ -11,8 +11,8 @@ function jwt() {
         isRevoked
     }).unless({
         path: [
-            "api/users/login",
-            "api/users/register",
+            "/api/users/login",
+            "/api/users/register",
         ]
     });
 }
