@@ -16,7 +16,7 @@ app.use(jwt());
 app.use("/users", require("./users/user.controller"));
 app.use(errorHandler);
 
-const port = process.env.NODE_ENV === "production" ? 80 : 3000;
+const port = process.env.NODE_ENV === "production" ? 80 : 4000;
 const server = app.listen(port, function () {
     console.log("Server listening on port" + port);
 });
