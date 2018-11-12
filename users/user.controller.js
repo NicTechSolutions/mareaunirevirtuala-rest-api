@@ -5,6 +5,7 @@ const userService = require("./user.service");
 // routes
 router.post("/login", login);
 router.post("/register", register);
+router.post("/fb/login", fbLogin);
 
 module.exports = router;
 
@@ -19,5 +20,12 @@ function login(req, res, next) {
 function register(req, res, next) {
     userService.create(req.body)
         .then(() => res.status(200).json({}))
+        .catch(err => next(err));
+}
+
+function fbLogin(req, res, next) {
+    accessToken = req.body.access_token;
+    userService.authFb(accessToken)
+        .then(user => res.json(user))
         .catch(err => next(err));
 }

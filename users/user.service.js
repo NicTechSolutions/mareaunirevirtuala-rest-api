@@ -3,10 +3,12 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const db = require("helpers/db");
 const User = db.User;
+const axios = require("axios");
 
 module.exports = {
     create,
     auth,
+    authFb,
     getById
 };
 
@@ -19,16 +21,14 @@ async function auth({
     }).select("+hash");
     if (user && bcrypt.compareSync(password, user.hash)) {
         const {
-            hash,
             _id,
-            createdAt,
-            ...userWithoutHash
+            ...userForResponse
         } = user.toObject();
         const token = jwt.sign({
             sub: user.id
         }, config.secret);
 
-        return { ...userWithoutHash,
+        return { ...userForResponse,
             token
         };
     }
@@ -50,6 +50,38 @@ async function create(userParam) {
     await user.save();
 }
 
+async function createFb(userParam) {
+    let user = await User.findOne({
+        facebookId: userParam.facebookId
+    }).select("+facebookId");
+    if (!user) {
+        user = new User(userParam);
+        await user.save();
+    }
+
+    return user;
+}
+
+async function authFb(accessToken) {
+    const url = "https://graph.facebook.com/v3.2/me?fields=id,name,email&access_token=" + accessToken;
+    const userParam = await axios.get(url)
+        .then(response => {
+            response.data.facebookId = response.data.id;
+            // if the user doesn't accept to share the email address
+            if (!response.data.email) {
+                response.data.email = "defaultEmail@ro100.cf";
+            }
+            return response.data;
+        });
+
+    const user = await createFb(userParam);
+    const {
+        _id,
+        ...userForResponse
+    } = user.toObject();
+
+    return userForResponse;
+}
 async function getById(id) {
     return await User.findById(id);
 }

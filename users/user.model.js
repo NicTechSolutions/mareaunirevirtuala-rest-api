@@ -8,7 +8,6 @@ const schema = new Schema({
     },
     hash: {
         type: String,
-        required: true,
         select: false
     },
     email: {
@@ -18,7 +17,12 @@ const schema = new Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now
+        default: Date.now,
+        select: false
+    },
+    facebookId: {
+        type: String,
+        select: false
     }
 }, {
     versionKey: false
