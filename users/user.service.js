@@ -97,6 +97,7 @@ async function authFb(accessToken) {
 
     return userForResponse;
 }
+
 async function getById(id) {
     return await User.findById(id);
 }
