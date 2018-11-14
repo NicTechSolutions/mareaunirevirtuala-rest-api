@@ -22,6 +22,7 @@ async function auth({
     if (user && bcrypt.compareSync(password, user.hash)) {
         const {
             _id,
+            hash,
             ...userForResponse
         } = user.toObject();
         const token = jwt.sign({
@@ -46,8 +47,22 @@ async function create(userParam) {
     if (userParam.password) {
         user.hash = bcrypt.hashSync(userParam.password, 5);
     }
-
     await user.save();
+
+    const {
+        _id,
+        hash,
+        createdAt,
+        ...userForResponse
+    } = user.toObject();
+    const token = jwt.sign({
+        sub: user.id
+    }, config.secret);
+
+    return {
+        ...userForResponse,
+        token
+    };
 }
 
 async function createFb(userParam) {
