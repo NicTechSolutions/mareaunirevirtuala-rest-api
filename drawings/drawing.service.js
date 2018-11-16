@@ -1,8 +1,4 @@
-const mime = require('mime-types')
-
-module.exports = {
-    upload
-};
+const mime = require("mime-types")
 
 async function upload(drawing, userId) {
     const extension = mime.extension(drawing.mimetype);
@@ -10,3 +6,7 @@ async function upload(drawing, userId) {
         
     });
 }
+
+module.exports = {
+    upload
+};
