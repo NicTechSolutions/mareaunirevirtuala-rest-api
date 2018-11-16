@@ -2,13 +2,6 @@ const express = require("express");
 const router = express.Router();
 const userService = require("./user.service");
 
-// routes
-router.post("/login", login);
-router.post("/register", register);
-router.post("/fb/login", fbLogin);
-
-module.exports = router;
-
 function login(req, res, next) {
     userService.auth(req.body)
         .then((user) => user ? res.json(user) : res.status(400).json({
@@ -29,3 +22,10 @@ function fbLogin(req, res, next) {
         .then((user) => res.json(user))
         .catch((err) => next(err));
 }
+
+// routes
+router.post("/login", login);
+router.post("/register", register);
+router.post("/fb/login", fbLogin);
+
+module.exports = router;

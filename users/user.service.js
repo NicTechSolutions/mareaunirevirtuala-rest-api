@@ -5,13 +5,6 @@ const db = require("helpers/db");
 const User = db.User;
 const axios = require("axios");
 
-module.exports = {
-    create,
-    auth,
-    authFb,
-    getById
-};
-
 async function auth({
     email,
     password
@@ -101,3 +94,10 @@ async function authFb(accessToken) {
 async function getById(id) {
     return await User.findById(id);
 }
+
+module.exports = {
+    create,
+    auth,
+    authFb,
+    getById
+};
