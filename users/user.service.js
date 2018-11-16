@@ -91,6 +91,18 @@ async function authFb(accessToken) {
     return userForResponse;
 }
 
+async function remove(userId) {
+    if (await User.findOne({
+            sub: userId
+        })) {
+        throw "User doesn't exists.";
+    }
+
+    await User.deleteOne({
+        _id: userId
+    });
+}
+
 async function getById(id) {
     return await User.findById(id);
 }
@@ -99,5 +111,6 @@ module.exports = {
     create,
     auth,
     authFb,
+    remove,
     getById
 };

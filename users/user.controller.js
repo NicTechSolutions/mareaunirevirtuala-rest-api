@@ -1,11 +1,11 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const userService = require("./user.service");
+const userService = require('./user.service');
 
 function login(req, res, next) {
     userService.auth(req.body)
         .then((user) => user ? res.json(user) : res.status(400).json({
-            message: "Email or password is incorrect"
+            message: 'Email or password is incorrect'
         }))
         .catch((err) => next(err));
 }
@@ -23,9 +23,16 @@ function fbLogin(req, res, next) {
         .catch((err) => next(err));
 }
 
+function remove(req, res, next) {
+    userService.remove(req.user.sub)
+        .then(() => res.json({}))
+        .catch((err) => next(err));
+}
+
 // routes
-router.post("/login", login);
-router.post("/register", register);
-router.post("/fb/login", fbLogin);
+router.post('/login', login);
+router.post('/register', register);
+router.post('/fb/login', fbLogin);
+router.delete('/', remove);
 
 module.exports = router;
