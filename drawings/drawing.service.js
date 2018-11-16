@@ -1,4 +1,4 @@
-const mime = require('mime-types')
+const mime = require("mime-types")
 
 async function upload(drawing, userId) {
     const extension = mime.extension(drawing.mimetype);

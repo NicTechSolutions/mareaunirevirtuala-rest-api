@@ -17,7 +17,7 @@ function register(req, res, next) {
 }
 
 function fbLogin(req, res, next) {
-    accessToken = req.body.access_token;
+    const accessToken = req.body.access_token;
     userService.authFb(accessToken)
         .then((user) => res.json(user))
         .catch((err) => next(err));

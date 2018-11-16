@@ -4,7 +4,7 @@ const userService = require("users/user.service");
 const drawingService = require("./drawing.service");
 
 function upload(req, res, next) {
-    if (typeof req.files == 'undefined' || typeof req.files.drawing == 'undefined') {
+    if (typeof req.files == "undefined" || typeof req.files.drawing == "undefined") {
         return res.status(400).json({
             message: "No file was uploaded."
         });

@@ -73,7 +73,7 @@ async function createFb(userParam) {
 async function authFb(accessToken) {
     const url = "https://graph.facebook.com/v3.2/me?fields=id,name,email&access_token=" + accessToken;
     const userParam = await axios.get(url)
-        .then(response => {
+        .then((response) => {
             response.data.facebookId = response.data.id;
             // if the user doesn't accept to share the email address
             if (!response.data.email) {
