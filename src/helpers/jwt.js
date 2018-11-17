@@ -14,6 +14,7 @@ function jwt() {
             "/api/users/login",
             "/api/users/register",
             "/api/users/fb/login",
+            "/api/email/forgot"
         ]
     });
 }

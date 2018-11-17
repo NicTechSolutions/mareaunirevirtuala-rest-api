@@ -1,22 +1,23 @@
 const mailHelper = require('src/helpers/mail');
 const db = require("src/helpers/db");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 const config = require("config.json");
 
 module.exports = {
-    sendRandomEmail,
-    sendForgotPasswordEmail
+    sendForgotPasswordEmail,
+    resetPassword
 };
 
-async function sendRandomEmail() {
-    let body = {
-        from: '"Fred Foo 👻" <foo@example.com>', // sender address
-        to: 'bar@example.com, baz@example.com', // list of receivers
-        subject: 'Hello ✔', // Subject line
-        text: 'Hello world?', // plain text body
-        html: '<b>Hello world?</b>' // html body
-    };
-    return mailHelper.sendEmail(body);
+async function resetPassword(userId, newPassword) {
+    return db.User.update(
+        { 'id': userId }, //condition
+        { 'password': bcrypt.hashSync(newPassword, 5) }, //update
+        undefined, //options
+        (err, user) => {
+            console.log(err);
+            console.log(user);
+        });
 }
 
 async function sendForgotPasswordEmail(target) {
