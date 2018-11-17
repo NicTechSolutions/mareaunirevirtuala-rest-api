@@ -23,6 +23,11 @@ const schema = new Schema({
     facebookId: {
         type: String,
         select: false
+    },
+    compliance: {
+        type: Map,
+        of: String,
+        select: false
     }
 }, {
     versionKey: false

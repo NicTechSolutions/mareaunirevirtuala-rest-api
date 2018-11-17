@@ -103,6 +103,22 @@ async function remove(userId) {
     });
 }
 
+async function storeCompliance(userId, complianceParams) {
+
+
+    // getById(userId)
+    //     .then((user) => {
+    //         user.set({
+    //             compliance: {
+    //                 // constants.RECEIVE_EMAILS : complianceParams.receiveEmails
+    //                 // complianceConstants.RECEIVE_EMAILS: complianceParams.receiveEmails,
+    //                 // complianceConstants.NEXT_STEPS: complianceParams.nextSteps,
+    //                 // complianceConstants.MARKETING: complianceParams.marketing
+    //             }
+    //         })
+    //     });
+}
+
 async function getById(id) {
     return await User.findById(id);
 }
@@ -112,5 +128,6 @@ module.exports = {
     auth,
     authFb,
     remove,
+    storeCompliance,
     getById
 };
