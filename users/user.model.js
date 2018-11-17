@@ -26,7 +26,8 @@ const schema = new Schema({
     },
     compliance: {
         type: Map,
-        of: String,
+        of: Number,
+        default: {},
         select: false
     }
 }, {

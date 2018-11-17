@@ -46,6 +46,8 @@ async function create(userParam) {
         _id,
         hash,
         createdAt,
+        compliance,
+        facebookId,
         ...userForResponse
     } = user.toObject();
     const token = jwt.sign({
@@ -103,24 +105,17 @@ async function remove(userId) {
     });
 }
 
-async function storeCompliance(userId, complianceParams) {
-
-
-    // getById(userId)
-    //     .then((user) => {
-    //         user.set({
-    //             compliance: {
-    //                 // constants.RECEIVE_EMAILS : complianceParams.receiveEmails
-    //                 // complianceConstants.RECEIVE_EMAILS: complianceParams.receiveEmails,
-    //                 // complianceConstants.NEXT_STEPS: complianceParams.nextSteps,
-    //                 // complianceConstants.MARKETING: complianceParams.marketing
-    //             }
-    //         })
-    //     });
+async function storeCompliance(userId, complianceObj) {
+    User.findByIdAndUpdate(userId, {
+        compliance: complianceObj
+    }, (err, user) => {
+        if(err) 
+            throw "The compliance update fails."
+    });
 }
 
-async function getById(id) {
-    return await User.findById(id);
+async function getById(id, fields = []) {
+    return await User.findById(id, fields);
 }
 
 module.exports = {
