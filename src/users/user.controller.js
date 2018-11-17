@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const userService = require("./user.service");
+const userService = require("src/users/user.service");
 
 function login(req, res, next) {
     userService.auth(req.body)
