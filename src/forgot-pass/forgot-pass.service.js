@@ -21,9 +21,6 @@ async function sendRandomEmail() {
 
 async function sendForgotPasswordEmail(target) {
     db.User.find({ 'email': target }, (err, user) => {
-        console.log(err);
-        console.log(`found user ${user}`)
-
         const token = jwt.sign({
             sub: user.id
         }, config.secret);
@@ -33,13 +30,13 @@ async function sendForgotPasswordEmail(target) {
             to: target,
             subject: "Resetare parola",
             text: "Acceseaza linkul",
-            html: `<b>Acceseaza linkul pentru a reseta parola www.ro100.cf/reset-pass?token=${token}</b>`
+            html: `<b>Acceseaza linkul pentru a reseta parola <a href="www.ro100.cf/reset-pass?token=${token}">Click aici</a> </b>`
         };
 
         mailHelper.sendEmail(body).then(sent => {
-            console.log("Email sent");
+            console.log(`Email sent to ${user.email}`);
         }, err => {
-            console.log("Error in sending email");
+            console.log(`Error in sending email to ${user.email}`);
         });
 
     });
