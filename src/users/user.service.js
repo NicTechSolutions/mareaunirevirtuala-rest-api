@@ -1,7 +1,7 @@
 const config = require("config.json");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const db = require("../helpers/db");
+const db = require("src/helpers/db");
 const User = db.User;
 const axios = require("axios");
 
@@ -12,7 +12,7 @@ module.exports = {
     getById
 };
 
-async function auth({
+async function  auth({
     email,
     password
 }) {
