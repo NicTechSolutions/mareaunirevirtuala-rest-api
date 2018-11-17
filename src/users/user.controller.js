@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const userService = require('./user.service');
+const userService = require('src/users/user.service');
 const joi = require("joi");
 
 function login(req, res, next) {
