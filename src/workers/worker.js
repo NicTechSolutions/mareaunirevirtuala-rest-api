@@ -11,7 +11,6 @@ const s3 = new AWS.S3({
     secretAccessKey: config.aws.secretKey
 });
 
-
 function work() {
     const queue = exchange.queue({
         name: config.rabbit.upload,
