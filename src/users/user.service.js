@@ -109,8 +109,9 @@ async function storeCompliance(userId, complianceObj) {
     User.findByIdAndUpdate(userId, {
         compliance: complianceObj
     }, (err, user) => {
-        if(err) 
-            throw "The compliance update fails."
+        if (err) {
+            throw "The compliance settings store process failed."
+        }
     });
 }
 

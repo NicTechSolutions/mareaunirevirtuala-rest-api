@@ -1,12 +1,11 @@
-const express = require('express');
-const router = express.Router();
-const userService = require('src/users/user.service');
+const router = require("express").Router();
+const userService = require("src/users/user.service");
 const joi = require("joi");
 
 function login(req, res, next) {
     userService.auth(req.body)
         .then((user) => user ? res.json(user) : res.status(400).json({
-            message: 'Email or password is incorrect'
+            message: "Email or password is incorrect"
         }))
         .catch((err) => next(err));
 }

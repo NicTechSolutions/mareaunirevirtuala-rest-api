@@ -1,5 +1,4 @@
-const express = require("express");
-const router = express.Router();
+const router = require("express").Router();
 const drawingService = require("src/drawings/drawing.service");
 
 function upload(req, res, next) {
