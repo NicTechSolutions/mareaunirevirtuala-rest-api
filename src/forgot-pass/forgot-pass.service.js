@@ -15,16 +15,16 @@ async function resetPassword(token, newPassword) {
         if (!resetTokens[0]) {
             throw "Invalid reset password token";
         }
-        return db.User.update(
+        return db.User.updateOne(
             { "email": resetTokens[0].userEmail }, //condition
-            { "hash": bcrypt.hashSync(newPassword, 5) }, //update
-            undefined, //options
+            { $set: { "hash": bcrypt.hashSync(newPassword, 5) } }, //update
             (err, users) => {
                 if (err) {
                     throw err;
                 }
                 console.log(users);
-            });
+            }
+            );
     })
 
 }
