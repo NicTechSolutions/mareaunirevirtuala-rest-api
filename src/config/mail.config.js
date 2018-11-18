@@ -1,7 +1,6 @@
-const nodemailer = require('nodemailer');
+const nodemailer = require("nodemailer");
 
 
-module.exports = emailTransporter;
 
 const account = {
     email: "vlwc7zedyyrqexwf@ethereal.email",
@@ -10,7 +9,7 @@ const account = {
 
 function emailTransporter() {
     return nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
+        host: "smtp.ethereal.email",
         port: 587,
         auth: {
             user: account.email,
@@ -18,4 +17,7 @@ function emailTransporter() {
         }
     });
 };
+
+module.exports = emailTransporter;
+
 
