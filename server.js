@@ -18,7 +18,7 @@ app.use(jwt());
 
 app.use("/api/users", require("src/users/user.controller"));
 app.use("/api/drawings", require("src/drawings/drawing.controller"));
-app.use("/api/email", require("src/forgot-pass/forgot-pass.controller"));
+app.use("/api/password", require("src/forgot-pass/forgot-pass.controller"));
 app.use(errorHandler);
 
 const port = process.env.NODE_ENV === "production" ? 80 : 4000;
