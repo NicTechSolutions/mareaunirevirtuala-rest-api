@@ -47,6 +47,8 @@ async function create(userParam) {
         _id,
         hash,
         createdAt,
+        compliance,
+        facebookId,
         ...userForResponse
     } = user.toObject();
     const token = jwt.sign({
@@ -92,13 +94,37 @@ async function authFb(accessToken) {
     return userForResponse;
 }
 
-async function getById(id) {
-    return await User.findById(id);
+async function remove(userId) {
+    if (await User.findOne({
+            sub: userId
+        })) {
+        throw "User doesn't exists.";
+    }
+
+    await User.deleteOne({
+        _id: userId
+    });
+}
+
+async function storeCompliance(userId, complianceObj) {
+    User.findByIdAndUpdate(userId, {
+        compliance: complianceObj
+    }, (err, user) => {
+        if (err) {
+            throw "The compliance settings store process failed."
+        }
+    });
+}
+
+async function getById(id, fields = []) {
+    return await User.findById(id, fields);
 }
 
 module.exports = {
     create,
     auth,
     authFb,
+    remove,
+    storeCompliance,
     getById
 };

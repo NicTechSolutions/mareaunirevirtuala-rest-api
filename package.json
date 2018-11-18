@@ -18,6 +18,7 @@
         "express": "^4.16.3",
         "express-fileupload": "^1.0.0",
         "express-jwt": "^5.3.1",
+        "joi": "^14.0.6",
         "jsonwebtoken": "^8.2.2",
         "mime-types": "^2.1.21",
         "mongodb": "^3.0.10",
