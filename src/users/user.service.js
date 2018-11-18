@@ -5,14 +5,8 @@ const db = require("src/helpers/db");
 const User = db.User;
 const axios = require("axios");
 
-module.exports = {
-    create,
-    auth,
-    authFb,
-    getById
-};
 
-async function  auth({
+async function auth({
     email,
     password
 }) {
@@ -80,7 +74,7 @@ async function createFb(userParam) {
 async function authFb(accessToken) {
     const url = "https://graph.facebook.com/v3.2/me?fields=id,name,email&access_token=" + accessToken;
     const userParam = await axios.get(url)
-        .then(response => {
+        .then((response) => {
             response.data.facebookId = response.data.id;
             // if the user doesn't accept to share the email address
             if (!response.data.email) {
@@ -101,3 +95,10 @@ async function authFb(accessToken) {
 async function getById(id) {
     return await User.findById(id);
 }
+
+module.exports = {
+    create,
+    auth,
+    authFb,
+    getById
+};
