@@ -1,7 +1,5 @@
-const express = require("express");
-const router = express.Router();
-const userService = require("users/user.service");
-const drawingService = require("./drawing.service");
+const router = require("express").Router();
+const drawingService = require("src/drawings/drawing.service");
 
 function upload(req, res, next) {
     if (typeof req.files == "undefined" || typeof req.files.drawing == "undefined") {
