@@ -1,4 +1,3 @@
-const drawingService = require("./drawing.service");
 const router = require("express").Router();
 const drawingService = require("src/drawings/drawing.service");
 
