@@ -24,7 +24,9 @@ function upload(msg, ack) {
     const file = path.join(__dirname, "../../", "upload", filename);
 
     fs.readFile(file, (err, data) => {
-        if (err) throw err;
+        if (err) {
+            console.log(err);
+        };
         const params = {
             Bucket: config.aws.bucket,
             Key: filename,
