@@ -3,6 +3,7 @@ const jackrabbit = require("jackrabbit");
 const fs = require("fs");
 const path = require("path");
 const AWS = require("aws-sdk");
+const util = require("util");
 
 const rabbit = jackrabbit(config.rabbit.url);
 const exchange = rabbit.default();
@@ -11,31 +12,30 @@ const s3 = new AWS.S3({
     secretAccessKey: config.aws.secretKey
 });
 
+const readFileAsync = util.promisify(fs.readFile);
 
 function upload(msg, ack) {
     const filename = msg;
     const file = path.join(__dirname, "../../", "upload", filename);
 
-    fs.readFile(file, (err, data) => {
-        if (err) {
+    readFileAsync(file)
+        .then((fileBuffer) => {
+            return {
+                Bucket: config.aws.bucket,
+                Key: filename,
+                Body: fileBuffer
+            };
+        })
+        .then((params) => {
+            return s3.putObject(params).promise();
+        })
+        .then((data) => {
+            console.log(`File ${filename} uploaded into s3`);
+            ack();
+        })
+        .catch((err) => {
             console.log(err);
-            throw err;
-        }
-        const params = {
-            Bucket: config.aws.bucket,
-            Key: filename,
-            Body: file
-        };
-        s3.upload(params, function (s3Err, data) {
-            if (s3Err) {
-                console.log(s3Err);
-                throw s3Err;
-            } else {
-                console.log(`File uploaded successfully at ${data.Location}`)
-                ack();
-            }
         });
-    });
 }
 
 function work() {
