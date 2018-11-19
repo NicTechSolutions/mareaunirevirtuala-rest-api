@@ -8,5 +8,6 @@ mongoose.connect(config.connectionString, {
 mongoose.Promise = global.Promise;
 
 module.exports = {
-  User: require("../users/user.model")
+  User: require("../users/user.model"),
+  PasswordResetToken: require("../forgot-pass/passwordResetToken.model")
 };
