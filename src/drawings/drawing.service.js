@@ -5,14 +5,7 @@ async function upload(drawing, userId) {
     const extension = mime.extension(drawing.mimetype);
     const filename = `${userId}.${extension}`;
 
-    drawing.mv(`upload/${filename}`, function (err) {
-        if (err) {
-            console.log(err);
-            throw err;
-        }
-
-        publish(filename);
-    });
+    return drawing.mv(`upload/${filename}`);
 }
 
 module.exports = {
