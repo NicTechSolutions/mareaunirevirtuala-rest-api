@@ -18,8 +18,8 @@ function upload(msg, ack) {
 
     fs.readFile(file, (err, data) => {
         if (err) {
-            throw err;
             console.log(err);
+            throw err;
         }
         const params = {
             Bucket: config.aws.bucket,
@@ -28,8 +28,8 @@ function upload(msg, ack) {
         };
         s3.upload(params, function (s3Err, data) {
             if (s3Err) {
-                throw s3Err;
                 console.log(s3Err);
+                throw s3Err;
             } else {
                 console.log(`File uploaded successfully at ${data.Location}`)
                 ack();

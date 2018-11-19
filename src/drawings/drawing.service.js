@@ -8,6 +8,7 @@ async function upload(drawing, userId) {
     drawing.mv(`upload/${filename}`, function (err) {
         if (err) {
             console.log(err);
+            throw err;
         }
 
         publish(filename);
