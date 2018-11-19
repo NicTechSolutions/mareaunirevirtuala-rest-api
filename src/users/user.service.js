@@ -5,6 +5,7 @@ const db = require("src/helpers/db");
 const User = db.User;
 const axios = require("axios");
 
+
 async function auth({
     email,
     password

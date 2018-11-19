@@ -13,9 +13,11 @@ function upload(req, res, next) {
             message: "Uploaded with success."
         }))
         .catch((err) => next(err));
+
 }
 
 // routes
 router.post("/upload", upload);
 
 module.exports = router;
+

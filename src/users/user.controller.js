@@ -1,6 +1,6 @@
-const router = require("express").Router();
-const userService = require("src/users/user.service");
-const joi = require("joi");
+const express = require("express");
+const router = express.Router();
+const userService = require("./user.service");
 
 function login(req, res, next) {
     userService.auth(req.body)
@@ -23,35 +23,9 @@ function fbLogin(req, res, next) {
         .catch((err) => next(err));
 }
 
-function remove(req, res, next) {
-    userService.remove(req.user.sub)
-        .then(() => res.json({}))
-        .catch((err) => next(err));
-}
-
-function emails(req, res, next) {
-    const reqSchema = joi.object().keys({
-        "all": joi.boolean().truthy(1).falsy(0),
-        "next": joi.boolean().truthy(1).falsy(0),
-        "marketing": joi.boolean().truthy(1).falsy(0),
-    });
-
-    reqSchema.validate(req.body)
-        .then((v) => {
-            userService.storeCompliance(req.user.sub, req.body)
-                .then(() => res.json({}))
-                .catch((err) => next(err));
-        }).catch((err) => next(err));
-
-
-
-}
-
 // routes
 router.post("/login", login);
 router.post("/register", register);
 router.post("/fb/login", fbLogin);
-router.delete("/", remove);
-router.put("/emails", emails);
 
 module.exports = router;
