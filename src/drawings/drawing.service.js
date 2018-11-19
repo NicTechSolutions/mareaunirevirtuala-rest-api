@@ -1,10 +1,12 @@
 const mime = require("mime-types")
+const publish = require("src/queue/upload/publisher");
 
 async function upload(drawing, userId) {
     const extension = mime.extension(drawing.mimetype);
-    drawing.mv("upload/" + userId + "." + extension, function (err) {
-        
-    });
+    const filename = `${userId}.${extension}`;
+
+    publish(filename);
+    return drawing.mv(`upload/${filename}`);
 }
 
 module.exports = {
