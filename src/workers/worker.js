@@ -27,37 +27,15 @@ function upload(msg, ack) {
             };
         })
         .then((params) => {
-            return s3.putObject(params);
+            return s3.putObject(params).promise();
         })
         .then((data) => {
-            console.log(`File uploaded successfully at ${data.Location}`)
-            // ack();
+            console.log(`File ${filename} uploaded into s3`);
+            ack();
         })
         .catch((err) => {
             console.log(err);
         });
-
-
-    // fs.readFile(file, (err, data) => {
-    //     if (err) {
-    //         console.log(err);
-    //         throw err;
-    //     }
-    //     const params = {
-    //         Bucket: config.aws.bucket,
-    //         Key: filename,
-    //         Body: file
-    //     };
-    //     s3.upload(params, function (s3Err, data) {
-    //         if (s3Err) {
-    //             console.log(s3Err);
-    //             throw s3Err;
-    //         } else {
-    //             console.log(`File uploaded successfully at ${data.Location}`)
-    //             ack();
-    //         }
-    //     });
-    // });
 }
 
 function work() {

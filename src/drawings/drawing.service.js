@@ -5,9 +5,7 @@ async function upload(drawing, userId) {
     const extension = mime.extension(drawing.mimetype);
     const filename = `${userId}.${extension}`;
 
-    //@todo: comm temp
-    //publish(filename);
-
+    publish(filename);
     return drawing.mv(`upload/${filename}`);
 }
 
