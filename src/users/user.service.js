@@ -86,12 +86,19 @@ async function authFb(accessToken) {
         });
 
     const user = await createFb(userParam);
+
+    const token = jwt.sign({
+        sub: user.id
+    }, config.secret);
+
     const {
         _id,
         ...userForResponse
     } = user.toObject();
 
-    return userForResponse;
+    return { ...userForResponse,
+        token
+    };
 }
 
 async function remove(userId) {
