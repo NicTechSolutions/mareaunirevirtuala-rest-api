@@ -1,9 +1,6 @@
 const config = require("../../config.json");
 const jackrabbit = require("jackrabbit");
-const fs = require("fs");
-const path = require("path");
 const AWS = require("aws-sdk");
-const util = require("util");
 
 const rabbit = jackrabbit(config.rabbit.url);
 const exchange = rabbit.default();
@@ -12,8 +9,6 @@ const s3 = new AWS.S3({
     secretAccessKey: config.aws.secretKey
 });
 
-const readFileAsync = util.promisify(fs.readFile);
-
 function upload(msg, ack) {
     const userId = msg.id;
     const imgBuffer = new Buffer(msg.data.replace(/^data:image\/\w+;base64,/, ""), "base64");
@@ -21,7 +16,7 @@ function upload(msg, ack) {
 
     const params = {
         Bucket: config.aws.bucket,
-        Key: `ola${userId}.${extension}`,
+        Key: `${userId}.${extension}`,
         Body: imgBuffer,
         ContentEncoding: "base64",
         ContentType: `image/${extension}`
