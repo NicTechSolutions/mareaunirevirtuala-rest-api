@@ -23,9 +23,16 @@ function fbLogin(req, res, next) {
         .catch((err) => next(err));
 }
 
+function counter(req, res, next) {
+    userService.getDrawingsNo()
+        .then((drawingsNo) => res.json(drawingsNo))
+        .catch((err) => next(err));
+}
+
 // routes
 router.post("/login", login);
 router.post("/register", register);
 router.post("/fb/login", fbLogin);
+router.get("/counter", counter);
 
 module.exports = router;
