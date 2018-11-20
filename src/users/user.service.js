@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 const db = require("src/helpers/db");
 const User = db.User;
 const axios = require("axios");
-
+const util = require('util');
 
 async function auth({
     email,
@@ -123,6 +123,16 @@ async function storeCompliance(userId, complianceObj) {
     });
 }
 
+const findByIdAndUpdate = util.promisify(User.findByIdAndUpdate);
+
+async function addDrawing(userId) {
+    return User.findOneAndUpdate({
+        _id: userId
+    }, {
+        drawing: true
+    }).exec();
+}
+
 async function getById(id, fields = []) {
     return await User.findById(id, fields);
 }
@@ -133,5 +143,6 @@ module.exports = {
     authFb,
     remove,
     storeCompliance,
+    addDrawing,
     getById
 };

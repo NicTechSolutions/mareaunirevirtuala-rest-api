@@ -30,6 +30,10 @@ const schema = new Schema({
         of: Number,
         default: {},
         select: false
+    },
+    drawing: {
+        type: Boolean,
+        default: false
     }
 }, {
     versionKey: false

@@ -11,7 +11,6 @@ function upload(req, res, next) {
             message: "Uploaded with success."
         }))
         .catch((err) => next(err));
-
 }
 
 // routes
