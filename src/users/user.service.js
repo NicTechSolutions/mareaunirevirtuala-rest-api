@@ -5,7 +5,6 @@ const db = require("src/helpers/db");
 const User = db.User;
 const axios = require("axios");
 
-
 async function auth({
     email,
     password
@@ -123,6 +122,28 @@ async function storeCompliance(userId, complianceObj) {
     });
 }
 
+async function getCompliance(userId) {
+    return User.findOne({
+        _id: userId
+    }).select({
+        "compliance": 1,
+    }).exec();
+}
+
+async function getDrawingsNo() {
+    return User.countDocuments({
+        drawing: true
+    }).exec();
+}
+
+async function addDrawing(userId) {
+    return User.findOneAndUpdate({
+        _id: userId
+    }, {
+        drawing: true
+    }).exec();
+}
+
 async function getById(id, fields = []) {
     return await User.findById(id, fields);
 }
@@ -133,5 +154,8 @@ module.exports = {
     authFb,
     remove,
     storeCompliance,
+    getCompliance,
+    getDrawingsNo,
+    addDrawing,
     getById
 };
