@@ -8,6 +8,7 @@ const schema = new Schema({
     },
     hash: {
         type: String,
+        default: "",
         select: false
     },
     email: {
