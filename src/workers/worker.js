@@ -15,22 +15,22 @@ const s3 = new AWS.S3({
 const readFileAsync = util.promisify(fs.readFile);
 
 function upload(msg, ack) {
-    const filename = msg;
-    const file = path.join(__dirname, "../../", "upload", filename);
+    const userId = msg.id;
+    const imgBuffer = new Buffer(msg.data.replace(/^data:image\/\w+;base64,/, ""), "base64");
+    const extension = msg.data.split(';')[0].split('/')[1];
 
-    readFileAsync(file)
-        .then((fileBuffer) => {
-            return {
-                Bucket: config.aws.bucket,
-                Key: filename,
-                Body: fileBuffer
-            };
-        })
-        .then((params) => {
-            return s3.putObject(params).promise();
-        })
+    const params = {
+        Bucket: config.aws.bucket,
+        Key: `ola${userId}.${extension}`,
+        Body: imgBuffer,
+        ContentEncoding: "base64",
+        ContentType: `image/${extension}`
+    }
+
+    s3.upload(params)
+        .promise()
         .then((data) => {
-            console.log(`File ${filename} uploaded into s3`);
+            console.log(`File uploaded saved ${data.Location}`);
             ack();
         })
         .catch((err) => {
