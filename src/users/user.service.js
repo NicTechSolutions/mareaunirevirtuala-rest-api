@@ -122,6 +122,14 @@ async function storeCompliance(userId, complianceObj) {
     });
 }
 
+async function getCompliance(userId) {
+    return User.findOne({
+        _id: userId
+    }).select({
+        "compliance": 1,
+    }).exec();
+}
+
 async function getDrawingsNo() {
     return User.countDocuments({
         drawing: true
@@ -146,6 +154,7 @@ module.exports = {
     authFb,
     remove,
     storeCompliance,
+    getCompliance,
     getDrawingsNo,
     addDrawing,
     getById
