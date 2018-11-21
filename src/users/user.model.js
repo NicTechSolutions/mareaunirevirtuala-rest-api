@@ -23,6 +23,7 @@ const schema = new Schema({
     },
     facebookId: {
         type: String,
+        default: "",
         select: false
     },
     compliance: {
