@@ -11,26 +11,28 @@ const s3 = new AWS.S3({
 
 function upload(msg, ack) {
     const userId = msg.id;
-    const imgBuffer = new Buffer(msg.data.replace(/^data:image\/\w+;base64,/, ""), "base64");
-    const extension = msg.data.split(';')[0].split('/')[1];
+    if (msg.data) {
+        const imgBuffer = new Buffer(msg.data.replace(/^data:image\/\w+;base64,/, ""), "base64");
+        const extension = msg.data.split(';')[0].split('/')[1];
 
-    const params = {
-        Bucket: config.aws.bucket,
-        Key: `${userId}.${extension}`,
-        Body: imgBuffer,
-        ContentEncoding: "base64",
-        ContentType: `image/${extension}`
+        const params = {
+            Bucket: config.aws.bucket,
+            Key: `${userId}.${extension}`,
+            Body: imgBuffer,
+            ContentEncoding: "base64",
+            ContentType: `image/${extension}`
+        }
+
+        s3.upload(params)
+            .promise()
+            .then((data) => {
+                console.log(`File uploaded saved ${data.Location}`);
+                ack();
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
-
-    s3.upload(params)
-        .promise()
-        .then((data) => {
-            console.log(`File uploaded saved ${data.Location}`);
-            ack();
-        })
-        .catch((err) => {
-            console.log(err);
-        });
 }
 
 function work() {
