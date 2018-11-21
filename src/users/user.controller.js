@@ -11,9 +11,19 @@ function login(req, res, next) {
 }
 
 function register(req, res, next) {
-    userService.create(req.body)
-        .then((user) => user ? res.json(user) : res.status(400).json())
-        .catch((err) => next(err));
+    const reqSchema = joi.object().keys({
+        "name": joi.string().min(3).max(30),
+        "email": joi.string().email({
+            minDomainAtoms: 2
+        }).required(),
+        "password": joi.string().regex(/^[a-zA-Z0-9#$^+=!*()@%&].{3,30}$/).required()
+    });
+    reqSchema.validate(req.body)
+        .then((v) => {
+            userService.create(req.body)
+                .then((user) => user ? res.json(user) : res.status(400).json())
+                .catch((err) => next(err));
+        }).catch((err) => next(err));
 }
 
 function fbLogin(req, res, next) {
