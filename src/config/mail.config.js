@@ -2,15 +2,10 @@ const nodemailer = require("nodemailer");
 const config = require("../../config.json").email;
 
 function emailTransporter() {
-
+    return createGmailTransport();
 };
 
 function createGmailTransport() {
-    const account = {
-        user: config.user,
-        pass: config.pass
-    };
-
     return nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -20,7 +15,7 @@ function createGmailTransport() {
     });
 }
 
-function createEtherealTransport {
+function createEtherealTransport() {
     return nodemailer.createTransport({
         host: "smtp.ethereal.email",
         port: 587,
