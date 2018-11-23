@@ -23,7 +23,10 @@ function register(req, res, next) {
             userService.create(req.body)
                 .then((user) => user ? res.json(user) : res.status(400).json())
                 .catch((err) => next(err));
-        }).catch((err) => next(err));
+        }).catch((err) => {
+            err.name = "ValidationErrorRegister";
+            next(err)
+        });
 }
 
 function fbLogin(req, res, next) {
