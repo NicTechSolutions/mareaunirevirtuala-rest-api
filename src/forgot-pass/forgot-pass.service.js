@@ -18,36 +18,28 @@ var genToken = function () {
 
 
 async function resetPassword(token, newPassword) {
-    return db.PasswordResetToken.find({
-        'token': token
-    }, (err, resetTokens) => {
-        if (!resetTokens[0]) {
-            throw "Invalid reset password token";
-        }
-        return db.User.updateOne({
-                "email": resetTokens[0].userEmail
-            }, //condition
-            {
-                $set: {
-                    "hash": bcrypt.hashSync(newPassword, 5)
-                }
-            }, //update
-            (err, users) => {
-                if (err) {
-                    throw err;
-                }
-            }
-        );
-    })
+    return PasswordResetToken.findOneAndRemove({
+            token: token
+        }).exec()
+        .then((resetTokenObj) => {
+            return User.findOneAndUpdate({
+                email: resetTokenObj.userEmail
+            }, {
+                hash: bcrypt.hashSync(newPassword, 5)
+            }).exec();
+        });
 
 }
 
 async function sendForgotPasswordEmail(target) {
     const user = await User.findOne({
         email: target
-    });
+    }).select("+facebookId");
     if (!user) {
         throw "Nu exista cont asociat acestui email";
+    }
+    if (user.facebookId) {
+        throw "Acest email a fost folosit la conectarea cu Facebook."
     }
 
     const resetTokenObj = new PasswordResetToken({
