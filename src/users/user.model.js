@@ -29,7 +29,11 @@ const schema = new Schema({
     compliance: {
         type: Map,
         of: Number,
-        default: {},
+        default: {
+            "all": false,
+            "next": false,
+            "marketing": false
+        },
         select: false
     },
     drawing: {
