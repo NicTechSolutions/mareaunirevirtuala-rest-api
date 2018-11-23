@@ -1,6 +1,7 @@
 const config = require("../../config.json");
 const jackrabbit = require("jackrabbit");
 const AWS = require("aws-sdk");
+const winston = require("../../config/winston");
 
 const rabbit = jackrabbit(config.rabbit.url);
 const exchange = rabbit.default();
@@ -23,16 +24,15 @@ function upload(msg, ack) {
             ContentType: `image/${extension}`
         }
 
-        s3.upload(params)
-            .promise()
+        s3.upload(params).promise()
             .then((data) => {
-                console.log(`File uploaded saved ${data.Location}`);
+                winston.info(`File uploaded saved ${data.Location}`);
                 ack();
-            })
-            .catch((err) => {
+            }).catch((err) => {
                 console.log(err);
             });
     }
+    ack();
 }
 
 function work() {
