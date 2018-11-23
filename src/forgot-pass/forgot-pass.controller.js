@@ -15,9 +15,7 @@ function sendForgotPasswordEmail(req, res, next) {
 function resetPassword(req, res, next) {
     forgotPasswordService.resetPassword(req.query.token, req.body.newPassword)
         .then(() => {
-            res.json({
-                message: 'success'
-            })
+            res.json({})
         }, err => {
             next(err);
         })

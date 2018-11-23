@@ -8,7 +8,7 @@ function upload(req, res, next) {
     };
     drawingService.upload(dto)
         .then(() => res.json({
-            message: "Uploaded with success."
+            message: "Acum esti partea din Marea Unire Virtuala."
         }))
         .catch((err) => next(err));
 }

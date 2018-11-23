@@ -5,7 +5,7 @@ const joi = require("joi");
 function login(req, res, next) {
     userService.auth(req.body)
         .then((user) => user ? res.json(user) : res.status(400).json({
-            message: "Email or password is incorrect"
+            message: "Email sau parola incorecta."
         }))
         .catch((err) => next(err));
 }

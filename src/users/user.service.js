@@ -32,7 +32,7 @@ async function create(userParam) {
     if (await User.findOne({
             email: userParam.email
         })) {
-        throw "Email already used";
+        throw "Exista deja un cont asociat acestui email.";
     }
 
     const user = new User(userParam);
@@ -96,8 +96,7 @@ async function authFb(accessToken) {
                 throw "Ai deja un cont asociat acestui email.";
             }
             return user;
-        })
-        .then((user) => {
+        }).then((user) => {
             const token = jwt.sign({
                 sub: user.id
             }, config.secret);
@@ -120,7 +119,7 @@ async function remove(userId) {
     if (await User.findOne({
             sub: userId
         })) {
-        throw "User doesn't exists.";
+        throw "Acest utilizator nu exista.";
     }
 
     await User.deleteOne({
@@ -129,13 +128,9 @@ async function remove(userId) {
 }
 
 async function storeCompliance(userId, complianceObj) {
-    User.findByIdAndUpdate(userId, {
+    return User.findByIdAndUpdate(userId, {
         compliance: complianceObj
-    }, (err, user) => {
-        if (err) {
-            throw "The compliance settings store process failed."
-        }
-    });
+    }).exec();
 }
 
 async function getCompliance(userId) {
