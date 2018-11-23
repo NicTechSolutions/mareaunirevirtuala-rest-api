@@ -1,4 +1,3 @@
-
 const emailTransporter = require('../config/');
 
 async function sendEmail(options) {
