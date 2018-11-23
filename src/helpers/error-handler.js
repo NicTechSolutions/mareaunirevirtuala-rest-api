@@ -1,4 +1,4 @@
-const logger = require("config/winston") ;
+const logger = require("config/winston");
 
 function errorHandler(err, req, res, next) {
     if (typeof (err) === "string") {
@@ -12,6 +12,13 @@ function errorHandler(err, req, res, next) {
         logger.warn(err);
         return res.status(400).json({
             message: err.name
+        });
+    }
+
+    if (err.name === "ValidationErrorRegister") {
+        logger.warn(err);
+        return res.status(400).json({
+            message: "Toate campurile sunt obligatorii"
         });
     }
 

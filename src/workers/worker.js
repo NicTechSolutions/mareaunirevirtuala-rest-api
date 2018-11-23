@@ -29,7 +29,7 @@ function upload(msg, ack) {
                 winston.info(`File uploaded saved ${data.Location}`);
                 ack();
             }).catch((err) => {
-                console.log(err);
+                winston.warn(`File uploaded saved ${data.Location}`);
             });
     }
 }

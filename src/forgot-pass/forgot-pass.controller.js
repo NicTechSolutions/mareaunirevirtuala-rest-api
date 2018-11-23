@@ -1,12 +1,5 @@
-const express = require("express");
-
 const forgotPasswordService = require('./forgot-pass.service');
-
-const router = express.Router();
-module.exports = router;
-
-router.post("/forgot", sendForgotPasswordEmail);
-router.post("/reset", resetPassword);
+const router = require("express").Router();
 
 function sendForgotPasswordEmail(req, res, next) {
     forgotPasswordService.sendForgotPasswordEmail(req.query.email)
@@ -22,10 +15,12 @@ function sendForgotPasswordEmail(req, res, next) {
 function resetPassword(req, res, next) {
     forgotPasswordService.resetPassword(req.query.token, req.body.newPassword)
         .then(() => {
-            res.json({
-                message: 'success'
-            })
+            res.json({})
         }, err => {
             next(err);
         })
 }
+
+router.post("/forgot", sendForgotPasswordEmail);
+router.post("/reset", resetPassword);
+module.exports = router;

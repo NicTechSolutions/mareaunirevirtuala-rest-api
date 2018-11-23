@@ -1,7 +1,5 @@
 const nodemailer = require("nodemailer");
 
-
-
 const account = {
     email: "vlwc7zedyyrqexwf@ethereal.email",
     password: "TadjRuZJY4KDrZ7nRY"

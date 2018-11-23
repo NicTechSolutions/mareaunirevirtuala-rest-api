@@ -1,8 +1,11 @@
-const mailHelper = require('src/helpers/mail');
 const db = require("src/helpers/db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const config = require("config.json");
+const getTemplate = require("templates/resetpassword.js");
+const publish = require("src/queue/publisherEmail");
+const User = db.User;
+const PasswordResetToken = db.PasswordResetToken;
 
 
 var rand = function () {
@@ -15,44 +18,38 @@ var genToken = function () {
 
 
 async function resetPassword(token, newPassword) {
-    return db.PasswordResetToken.find({ 'token': token }, (err, resetTokens) => {
-        if (!resetTokens[0]) {
-            throw "Invalid reset password token";
-        }
-        return db.User.updateOne(
-            { "email": resetTokens[0].userEmail }, //condition
-            { $set: { "hash": bcrypt.hashSync(newPassword, 5) } }, //update
-            (err, users) => {
-                if (err) {
-                    throw err;
-                }
-            }
-            );
-    })
+    return PasswordResetToken.findOneAndRemove({
+            token: token
+        }).exec()
+        .then((resetTokenObj) => {
+            return User.findOneAndUpdate({
+                email: resetTokenObj.userEmail
+            }, {
+                hash: bcrypt.hashSync(newPassword, 5)
+            }).exec();
+        });
 
 }
 
 async function sendForgotPasswordEmail(target) {
-    return db.User.find({ 'email': target }, (err, user) => {
-        if (!user) {
-            throw "User not found";
-        }
-        const resetTokenObj = new db.PasswordResetToken({
-            'userEmail': target,
-            'token': genToken()
-        });
+    const user = await User.findOne({
+        email: target
+    }).select("+facebookId");
+    if (!user) {
+        throw "Nu exista cont asociat acestui email";
+    }
+    if (user.facebookId) {
+        throw "Acest email a fost folosit la conectarea cu Facebook."
+    }
 
-        resetTokenObj.save((err, resetToken) => {
-            let body = {
-                from: '"RO100" <noreply@ro100.com',
-                to: target,
-                subject: "Resetare parola",
-                text: "Acceseaza linkul",
-                html: `<b>Acceseaza linkul pentru a reseta parola <a href="www.ro100.cf/reset-pass?token=${resetToken.token}">Click aici</a> </b>`
-            };
+    const resetTokenObj = new PasswordResetToken({
+        'userEmail': target,
+        'token': genToken()
+    });
 
-            return mailHelper.sendEmail(body);
-        })
+    resetTokenObj.save().then((resetToken) => {
+        const body = getTemplate(target, resetToken.token);
+        publish(body);
     });
 }
 
