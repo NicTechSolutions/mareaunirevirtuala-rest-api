@@ -32,7 +32,6 @@ function upload(msg, ack) {
                 console.log(err);
             });
     }
-    ack();
 }
 
 function work() {
