@@ -1,21 +1,34 @@
 const nodemailer = require("nodemailer");
-
-const account = {
-    email: "vlwc7zedyyrqexwf@ethereal.email",
-    password: "TadjRuZJY4KDrZ7nRY"
-};
+const config = require("../../config.json").email;
 
 function emailTransporter() {
+
+};
+
+function createGmailTransport() {
+    const account = {
+        user: config.user,
+        pass: config.pass
+    };
+
+    return nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: config.user,
+            pass: config.pass
+        }
+    });
+}
+
+function createEtherealTransport {
     return nodemailer.createTransport({
         host: "smtp.ethereal.email",
         port: 587,
         auth: {
-            user: account.email,
-            pass: account.password
+            user: "vlwc7zedyyrqexwf@ethereal.email",
+            pass: "TadjRuZJY4KDrZ7nRY"
         }
     });
-};
+}
 
 module.exports = emailTransporter;
-
-
