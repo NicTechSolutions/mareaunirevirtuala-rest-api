@@ -34,18 +34,9 @@ function fbLogin(req, res, next) {
 }
 
 function storeEmailPreferences(req, res, next) {
-    const reqSchema = joi.object().keys({
-        "all": joi.boolean().truthy(1).falsy(0),
-        "next": joi.boolean().truthy(1).falsy(0),
-        "marketing": joi.boolean().truthy(1).falsy(0),
-    });
-
-    reqSchema.validate(req.body)
-        .then((v) => {
-            userService.storeCompliance(req.user.sub, req.body)
-                .then(() => res.json({}))
-                .catch((err) => next(err));
-        }).catch((err) => next(err));
+    userService.storeCompliance(req.user.sub, req.body)
+        .then(() => res.json({}))
+        .catch((err) => next(err));
 }
 
 function getEmailPreferences(req, res, next) {
