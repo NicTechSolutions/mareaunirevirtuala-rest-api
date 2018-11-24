@@ -18,7 +18,7 @@ module.exports = {
       host: "68.183.140.93",
       ref: "origin/master",
       repo: "https://github.com/NicTechSolutions/nodejs-mongodb-auth.git",
-      path: "/home/claudiu/nodejs-mongodb-auth",
+      path: "/home/claudiun/nodejs-mongodb-auth",
       'post-deploy': 'npm install && pm2 reload ecosystem.config.js --env production'
     }
   }
