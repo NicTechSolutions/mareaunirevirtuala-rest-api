@@ -147,6 +147,10 @@ async function getDrawingsNo() {
     }).exec();
 }
 
+async function getUsersNo() {
+    return User.count().exec();
+}
+
 async function addDrawing(userId) {
     return User.findOneAndUpdate({
         _id: userId
@@ -164,6 +168,7 @@ module.exports = {
     auth,
     authFb,
     remove,
+    getUsersNo,
     storeCompliance,
     getCompliance,
     getDrawingsNo,

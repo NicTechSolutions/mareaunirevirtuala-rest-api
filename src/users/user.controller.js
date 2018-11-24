@@ -12,7 +12,7 @@ function login(req, res, next) {
 
 function register(req, res, next) {
     const reqSchema = joi.object().keys({
-        "name": joi.string().min(3).max(30),
+        "name": joi.string().required(),
         "email": joi.string().email({
             minDomainAtoms: 2
         }).required(),
@@ -48,9 +48,15 @@ function getEmailPreferences(req, res, next) {
         .catch((err) => next(err));
 }
 
-function counter(req, res, next) {
+function drawingsCounter(req, res, next) {
     userService.getDrawingsNo()
         .then((drawingsNo) => res.json(drawingsNo))
+        .catch((err) => next(err));
+}
+
+function counter(req, res, next) {
+    userService.getUsersNo()
+        .then((usersNo) => res.json(usersNo))
         .catch((err) => next(err));
 }
 
@@ -60,6 +66,7 @@ router.post("/register", register);
 router.post("/fb/login", fbLogin);
 router.put("/emails", storeEmailPreferences);
 router.get("/emails", getEmailPreferences);
+router.get("/drawings/counter", drawingsCounter);
 router.get("/counter", counter);
 
 module.exports = router;
