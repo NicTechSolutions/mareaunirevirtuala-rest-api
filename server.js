@@ -3,11 +3,14 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const compression = require("compression");
+const helmet = require("helmet");
 const jwt = require("src/helpers/jwt");
 const errorHandler = require("src/helpers/error-handler");
 const morgan = require("morgan");
 const winston = require("config/winston");
 
+app.use(helmet());
 app.use(morgan("combined", {
     skip: function (req, res) {
         return res.statusCode < 400
@@ -23,9 +26,11 @@ app.use(jwt());
 app.use("/api/users", require("src/users/user.controller"));
 app.use("/api/drawings", require("src/drawings/drawing.controller"));
 app.use("/api/password", require("src/forgot-pass/forgot-pass.controller"));
+app.use(compression());
 app.use(errorHandler);
 
-const port = process.env.NODE_ENV === "production" ? 80 : 4000;
+// both 4000, nginx will handle the request through the reverse proxy
+const port = process.env.NODE_ENV === "production" ? 4000 : 4000;
 const server = app.listen(port, function () {
     winston.info(`Server listening on port : ${port}`);
 });
