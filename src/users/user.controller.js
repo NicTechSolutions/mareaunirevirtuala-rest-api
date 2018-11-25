@@ -60,11 +60,18 @@ function counter(req, res, next) {
         .catch((err) => next(err));
 }
 
+function remove(req, res, next) {
+    userService.remove(req.user.sub)
+        .then(() => res.json({}))
+        .catch((err) => next(err));
+}
+
 // routes
 router.post("/login", login);
 router.post("/register", register);
 router.post("/fb/login", fbLogin);
 router.put("/emails", storeEmailPreferences);
+router.delete("/", remove);
 router.get("/emails", getEmailPreferences);
 router.get("/drawings/counter", drawingsCounter);
 router.get("/counter", counter);
