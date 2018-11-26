@@ -6,18 +6,7 @@ module.exports = {
     exec_mode: "cluster",
     autorestart: true,
     watch: false,
-    max_memory_restart: "500M",
-    env_production: {
-      NODE_ENV: "production"
-    }
-  }, {
-    name: "UPLOAD",
-    script: "src/workers/worker.js",
-    instances: "1",
-    exec_mode: "cluster",
-    autorestart: true,
-    watch: false,
-    max_memory_restart: "100M",
+    max_memory_restart: "2G",
     env_production: {
       NODE_ENV: "production"
     }
