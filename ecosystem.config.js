@@ -2,7 +2,7 @@ module.exports = {
   apps: [{
     name: "MUV",
     script: "server.js",
-    instances: "max",
+    instances: "4",
     exec_mode: "cluster",
     autorestart: true,
     watch: false,
