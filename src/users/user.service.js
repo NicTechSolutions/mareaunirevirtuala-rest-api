@@ -85,7 +85,7 @@ async function authFb(accessToken) {
     }, {
         email: userParams.email
     }];
-    return findByOr(params, ["hash", "facebookId"])
+    return findByOr(params, ["hash", "facebookId", "drawing"])
         .then((user) => {
             if (!user) {
                 return User.create(userParams);
