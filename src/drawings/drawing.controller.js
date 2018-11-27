@@ -8,7 +8,8 @@ function upload(req, res, next) {
     };
     drawingService.upload(dto)
         .then(() => res.json({
-            message: "Acum esti partea din Marea Unire Virtuala."
+            message: "Acum esti partea din Marea Unire Virtuala.",
+            uri: `upload/${userId}.jpg`
         }))
         .catch((err) => next(err));
 }
