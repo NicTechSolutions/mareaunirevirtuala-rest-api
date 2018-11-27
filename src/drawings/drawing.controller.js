@@ -9,7 +9,7 @@ function upload(req, res, next) {
     drawingService.upload(dto)
         .then(() => res.json({
             message: "Acum esti partea din Marea Unire Virtuala.",
-            uri: `upload/${userId}.jpg`
+            uri: `upload/${dto.id}.jpg`
         }))
         .catch((err) => next(err));
 }
