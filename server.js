@@ -13,7 +13,6 @@ const config = require("config.json");
 const path = require("path");
 
 app.use(express.static(path.join(__dirname, config.pathToBuild)));
-
 app.use(helmet());
 app.use(morgan("combined", {
     skip: function (req, res) {
@@ -26,6 +25,9 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 app.use(cors());
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + `/${config.pathToBuild}/index.html`));
+});
 app.use(jwt());
 app.use("/api/users", require("src/users/user.controller"));
 app.use("/api/drawings", require("src/drawings/drawing.controller"));
@@ -33,9 +35,6 @@ app.use("/api/password", require("src/forgot-pass/forgot-pass.controller"));
 app.use(compression());
 app.use(errorHandler);
 
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname + `${config.pathToBuild}/index.html`));
-});
 
 // both 4000, nginx will handle the request through the reverse proxy
 const port = process.env.NODE_ENV === "production" ? 4000 : 4000;
