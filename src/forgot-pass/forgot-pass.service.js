@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const config = require("config.json");
 const getTemplate = require("templates/resetpassword.js");
-const publish = require("src/queue/publisherEmail");
+const mail = require("src/helpers/mail");
 const User = db.User;
 const PasswordResetToken = db.PasswordResetToken;
 
@@ -47,9 +47,9 @@ async function sendForgotPasswordEmail(target) {
         'token': genToken()
     });
 
-    resetTokenObj.save().then((resetToken) => {
+    return resetTokenObj.save().then((resetToken) => {
         const body = getTemplate(target, resetToken.token);
-        publish(body);
+        return mail.sendEmail(body);
     });
 }
 
