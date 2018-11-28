@@ -21,9 +21,12 @@ app.use(morgan("combined", {
     stream: winston.stream
 }));
 app.use(bodyParser.urlencoded({
-    extended: false
+    extended: true,
+    limit: "50mb"
 }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({
+    limit: '50mb'
+}));
 app.use(cors());
 app.get(/^\/(?!api).*/, (req, res) => {
     res.sendFile(path.join(__dirname + `/${config.pathToBuild}/index.html`));
