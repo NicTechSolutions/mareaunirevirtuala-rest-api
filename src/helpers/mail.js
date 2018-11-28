@@ -1,7 +1,10 @@
-const emailTransporter = require('../config/');
+const sgMail = require("@sendgrid/mail");
+const apiKey = require("../../config.json").sendGridApiKey;
 
-async function sendEmail(options) {
-    return emailTransporter().sendMail(options);
+sgMail.setApiKey(apiKey);
+
+async function sendEmail(msg) {
+    return sgMail.send(msg)
 }
 
 module.exports = {
