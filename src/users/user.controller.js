@@ -1,6 +1,10 @@
 const router = require("express").Router();
 const userService = require("src/users/user.service");
 const joi = require("joi");
+const axios = require("axios");
+const config = require("config.json");
+
+
 
 function login(req, res, next) {
     userService.auth(req.body)
@@ -16,17 +20,33 @@ function register(req, res, next) {
         "email": joi.string().email({
             minDomainAtoms: 2
         }).required(),
-        "password": joi.string().regex(/^[a-zA-Z0-9#$^+=!*()@%&].{3,30}$/).required()
+        "password": joi.string().regex(/^[a-zA-Z0-9#$^+=!*()@%&].{3,30}$/).required(),
+        "captcha": joi.string().required()
     });
     reqSchema.validate(req.body)
         .then((v) => {
-            userService.create(req.body)
-                .then((user) => user ? res.json(user) : res.status(400).json())
-                .catch((err) => next(err));
+            validateCaptcha(req.body.captcha, req.connection.remoteAddress)
+                .then(captchaResponse => {
+                    if (captchaResponse.response.data.success) {
+                        userService.create(req.body)
+                            .then((user) => user ? res.json(user) : res.status(400).json())
+                            .catch((err) => next(err));
+                    } else {
+                        throw "Eroare la validarea RECaptcha";
+                    }
+                });
         }).catch((err) => {
             err.name = "ValidationErrorRegister";
             next(err)
         });
+}
+
+function validateCaptcha(response, remoteIp) {
+    return axios.post(config.recaptchaVerifyURL, {
+        secret: config.recaptchaKey,
+        response: response,
+        remoteip: remoteIp
+    });
 }
 
 function fbLogin(req, res, next) {
