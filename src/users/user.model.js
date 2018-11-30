@@ -39,6 +39,10 @@ const schema = new Schema({
     drawing: {
         type: Boolean,
         default: false
+    },
+    count: {
+        type: Number,
+        default: 0
     }
 }, {
     versionKey: false

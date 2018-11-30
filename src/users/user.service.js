@@ -152,11 +152,27 @@ async function getUsersNo() {
 }
 
 async function addDrawing(userId) {
-    return User.findOneAndUpdate({
+    // const user = await User.findOne({
+    //     _id: userId
+    // });
+    // const newCount = user.count;
+    // return User.findOneAndUpdate({
+    //     _id: userId
+    // }, {
+    //     drawing: true,
+    //     count: user.count + 1
+    // }).exec();
+
+    return User.findOne({
         _id: userId
-    }, {
-        drawing: true
-    }).exec();
+    }).then((user) => {
+        return User.findOneAndUpdate({
+            _id: user.id
+        }, {
+            drawing: true,
+            count: user.count + 1
+        }).exec()
+    });
 }
 
 async function getById(id, fields = []) {
