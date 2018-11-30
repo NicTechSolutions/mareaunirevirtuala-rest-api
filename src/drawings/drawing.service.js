@@ -7,7 +7,6 @@ const LIMIT = 10;
 
 async function isLimitReached(userId) {
     const userCount = await userService.getUserDrawingsCount(userId);
-    console.log(userCount);
     if (userCount > (LIMIT - 1)) {
         return true;
     }
