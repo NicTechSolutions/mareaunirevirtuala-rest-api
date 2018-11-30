@@ -2,14 +2,19 @@ const router = require("express").Router();
 const drawingService = require("src/drawings/drawing.service");
 
 function upload(req, res, next) {
+    const userId = req.user.sub;
+    const timestamp = new Date().getTime();
+    const filename = `${userId}-${timestamp}`;
+
     const dto = {
-        id: req.user.sub,
+        id: userId,
+        filename: filename,
         data: req.body.drawing
     };
     drawingService.upload(dto)
         .then(() => res.json({
             message: "Acum esti partea din Marea Unire Virtuala.",
-            uri: `upload/${dto.id}.png`
+            uri: `upload/${filename}.png`
         }))
         .catch((err) => next(err));
 }

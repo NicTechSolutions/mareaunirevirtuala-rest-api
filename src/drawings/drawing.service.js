@@ -7,7 +7,7 @@ async function upload(msgDto) {
     if (msgDto.data) {
         const path = `${appRoot}/storage/upload`;
         return Promise.all([
-            base64Img.img(msgDto.data, path, msgDto.id), userService.addDrawing(msgDto.id)
+            base64Img.img(msgDto.data, path, msgDto.filename), userService.addDrawing(msgDto.id)
         ]);
     }
 }
