@@ -29,6 +29,7 @@ async function auth({
 }
 
 async function create(userParam) {
+    console.log(userParam);
     if (await User.findOne({
             email: userParam.email
         })) {

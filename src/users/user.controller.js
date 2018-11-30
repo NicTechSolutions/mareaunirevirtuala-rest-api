@@ -3,6 +3,7 @@ const userService = require("src/users/user.service");
 const joi = require("joi");
 const axios = require("axios");
 const config = require("config.json");
+const logger = require("config/winston");
 
 
 
@@ -23,15 +24,22 @@ function register(req, res, next) {
         "password": joi.string().regex(/^[a-zA-Z0-9#$^+=!*()@%&].{3,30}$/).required(),
         "captcha": joi.string().required()
     });
+    logger.warn("before captcha validate");
     reqSchema.validate(req.body)
         .then((v) => {
+            logger.warn("before validate");
             return validateCaptcha(req.body.captcha);
         }).then(captchaResponse => {
             if (captchaResponse.data.success) {
-                return userService.create(req.body)
+                logger.warn("aaa");
+                logger.warn(req.body);
+                userService.create(req.body)
                     .then((user) => user ? res.json(user) : res.status(400).json())
             }
-            next("Eroare ReCaptcha");
+            logger.warn("bbbbbb");
+            res.status(401).json({
+                message: "Eroare ReCaptcha"
+            });
         }).catch((err) => {
             err.name = "ValidationErrorRegister";
             next(err)
