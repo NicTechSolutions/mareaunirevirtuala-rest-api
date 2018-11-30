@@ -39,7 +39,7 @@ function register(req, res, next) {
 }
 
 function validateCaptcha(response) {
-    const url = `${config.recaptchaVerifyURL}?secret=${config.recaptchaTestKey}&response=${response}`;
+    const url = `${config.recaptchaVerifyURL}?secret=${config.recaptchaKey}&response=${response}`;
     console.log(url);
     return axios.post(url);
 }
