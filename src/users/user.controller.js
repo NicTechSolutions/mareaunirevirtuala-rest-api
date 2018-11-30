@@ -25,16 +25,13 @@ function register(req, res, next) {
     });
     reqSchema.validate(req.body)
         .then((v) => {
-            validateCaptcha(req.body.captcha)
-                .then(captchaResponse => {
-                    if (captchaResponse.data.success) {
-                        return userService.create(req.body)
-                            .then((user) => user ? res.json(user) : res.status(400).json())
-                            .catch((err) => next(err));
-                    } else {
-                        next("Eroare ReCaptcha");
-                    }
-                });
+            return validateCaptcha(req.body.captcha);
+        }).then(captchaResponse => {
+            if (captchaResponse.data.success) {
+                return userService.create(req.body)
+                    .then((user) => user ? res.json(user) : res.status(400).json())
+            }
+            next("Eroare ReCaptcha");
         }).catch((err) => {
             err.name = "ValidationErrorRegister";
             next(err)
@@ -42,8 +39,9 @@ function register(req, res, next) {
 }
 
 function validateCaptcha(response) {
-    console.log(`${config.recaptchaVerifyURL}?secret=${config.recaptchaTestKey}&response=${response}`);
-    return axios.post(`${config.recaptchaVerifyURL}?secret=${config.recaptchaKey}&response=${response}`);
+    const url = `${config.recaptchaVerifyURL}?secret=${config.recaptchaTestKey}&response=${response}`;
+    console.log(url);
+    return axios.post(url);
 }
 
 function fbLogin(req, res, next) {
