@@ -151,6 +151,13 @@ async function getUsersNo() {
     return User.count().exec();
 }
 
+async function getUserDrawingsCount(userId) {
+    const user = await User.findOne({
+        _id: userId
+    }).exec();
+    return user.count;
+}
+
 async function addDrawing(userId) {
     return User.findOne({
         _id: userId
@@ -178,5 +185,6 @@ module.exports = {
     getCompliance,
     getDrawingsNo,
     addDrawing,
-    getById
+    getById,
+    getUserDrawingsCount
 };

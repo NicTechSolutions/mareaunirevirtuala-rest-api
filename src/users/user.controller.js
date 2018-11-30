@@ -81,6 +81,14 @@ function remove(req, res, next) {
         .catch((err) => next(err));
 }
 
+function userDrawingsCount(req, res, next) {
+    userService.getUserDrawingsCount(req.user.sub)
+        .then((count) => res.json({
+            count
+        }))
+        .catch((err) => next(err))
+}
+
 // routes
 router.post("/login", login);
 router.post("/register", register);
@@ -90,5 +98,6 @@ router.delete("/", remove);
 router.get("/emails", getEmailPreferences);
 router.get("/drawings/counter", drawingsCounter);
 router.get("/counter", counter);
+router.get("/drawings/count", userDrawingsCount);
 
 module.exports = router;
