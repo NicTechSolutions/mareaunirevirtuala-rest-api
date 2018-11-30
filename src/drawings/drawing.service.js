@@ -3,7 +3,7 @@ const winston = require("../../config/winston");
 const appRoot = require("app-root-path");
 const base64Img = require("base64-img-promise");
 
-const LIMIT = 6;
+const LIMIT = 10;
 
 async function isLimitReached(userId) {
     const userCount = await userService.getUserDrawingsCount(userId);
